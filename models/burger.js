@@ -2,9 +2,7 @@ const orm = require("../config/orm");
 
 var burger = {
     selectAll: function(cb) {
-      orm.selectAll("burgers", function(res) {
-        cb(res);
-      });
+      orm.selectAll("burgers", cb);
     },
     // The variables cols and vals are arrays.
     insertOne: function(cols, vals, cb) {
@@ -16,6 +14,11 @@ var burger = {
       orm.updateOne("burgers", objColVals, condition, function(res) {
         cb(res);
       });
+    },
+    delete: function (condition, cb) {
+      orm.delete("burgers", condition,function(res){
+        cb(res)
+      })
     }
   };
 

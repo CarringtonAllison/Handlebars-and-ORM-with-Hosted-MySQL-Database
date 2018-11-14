@@ -32,11 +32,11 @@ function objToSql(ob) {
 
 const orm = {
 
-    selectAll: function (tableInput) {
+    selectAll: function (tableInput, cb) {
         let queryString = "SELECT * FROM ??";
         connection.query(queryString, [tableInput], function (err, results) {
             if (err) throw err;
-            console.log(results)
+            cb(results);
         })
     },
 
@@ -61,23 +61,38 @@ const orm = {
         });
     },
 
-    updateOne: function(table, objColVals, condition, cb) {
+    updateOne: function (table, objColVals, condition, cb) {
         var queryString = "UPDATE " + table;
-    
+
         queryString += " SET ";
         queryString += objToSql(objColVals);
         queryString += " WHERE ";
         queryString += condition;
-    
+
         console.log(queryString);
-        connection.query(queryString, function(err, result) {
-          if (err) {
-            throw err;
-          }
-    
-          cb(result);
+        connection.query(queryString, function (err, result) {
+            if (err) {
+                throw err;
+            }
+
+            cb(result);
         });
-      },
+    },
+
+    delete: function (table, condition, cb) {
+        var queryString = "DELETE FROM " + table;
+        queryString += " WHERE ";
+        queryString += condition;
+
+        console.log(queryString)
+        connection.query(queryString, function (err, result) {
+            if (err) {
+                throw err;
+            }
+
+            cb(result);
+        });
+    }
 }
 
 
